@@ -26,7 +26,7 @@ function getData () {
     .catch(err => console.log(err))
 }
 
-function init () {
+function printMenu (data) {
   totalContent = ''
   searchTotal = 0
   data.forEach(item => {
@@ -64,48 +64,29 @@ function init () {
   searchTimes.innerHTML = `<p class="h6 mb-0 text--gray">本次搜尋共 ${searchTotal} 筆資料</p>`
 }
 
+function init () {
+  printMenu(data)
+}
+
 function showMenu (chosenarea) {
-  totalContent = ''
   let filterData
-  searchTotal = 0
 
   if(chosenarea === '全部地區') {
     filterData = data
   }else{
     filterData = data.filter(e => e.area === chosenarea)
   }
-  filterData.forEach(item => {
-    totalContent += `<li class="col-12 col-md-6 col-lg-4 mb--7 position-relative">
-                        <p class="bg--secondary mb-0 text-white py-2 px--7 width--tag position-absolute z-index--100 top font--1">${item.area}</p>
-                        <div class="card">
-                          <img src="${item.imgUrl}" class="card-img-top" alt="menu1">
-                          <div class="card-body position-relative">
-                            <div class="d-flex flex-column justify-content-between height--inside">
-                              <div>
-                                <p class="bg--primary mb-0 text-white py-1 px-2 width--tag--sm position-absolute z-index--100 top left">${item.rate}</p>
-                                <h5 class="card-title border-bottom--primary"><a href="#" class="text-decoration-none text--primary">${item.name}</a></h5>
-                                <p class="card-text text--gray">${item.description}</p>
-                              </div>
-                              <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex">
-                                  <span class="material-icons text--primary">
-                                    error
-                                  </span>
-                                  <p class="text--primary mb-0">剩下最後 ${item.group} 組</p>
-                                </div> 
-                                <div class="d-flex align-items-center">
-                                  <p class="text--primary mb-0">TWD</p>
-                                  <p class="text--primary mb-0 h2">$${item.price}</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>`
-  })
-  tripMenu.innerHTML = totalContent
-  searchTotal = filterData.length
-  searchTimes.innerHTML = `<p class="h6 mb-0 text--gray">本次搜尋共 ${searchTotal} 筆資料</p>`
+  printMenu(filterData)
+}
+
+function clearForm () {
+  formName.value = ''
+  formUrl.value = ''
+  formArea.value = ''
+  formprice.value = ''
+  formGroup.value = ''
+  formrate.value = ''
+  formDescription.value = ''
 }
 
 function searchHandler (e) {
@@ -126,6 +107,7 @@ function addMenu (e) {
     alert('您有空格尚未填寫')
   }else{
     data.push(obj)
+    clearForm()
     init()
   }
 }
